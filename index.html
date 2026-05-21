@@ -206,6 +206,12 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:poin
     <option value="">All Staff</option>
     <option>Ajay Kawa</option><option>Sachin Keni</option><option>Seema Tabbasum</option><option>Shane Mayer</option><option>Sylvia Fernandes</option><option>Reji Mathew</option>
   </select>
+  <select class="tbsel" id="flt-country" onchange="doFilter()" style="display:none">
+    <option value="">All Countries</option>
+  </select>
+  <select class="tbsel" id="flt-city" onchange="doFilter()" style="display:none">
+    <option value="">All Cities</option>
+  </select>
   <div class="legend">
     <div class="leg"><div class="ldot" style="background:#4CAF7D"></div>Contracted</div>
     <div class="leg"><div class="ldot" style="background:#5B9BD5"></div>In Progress</div>
@@ -43413,17 +43419,122 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:poin
 <div class="toast" id="toast"></div>
 <script>
 let mode='direct';
-function switchMode(m){mode=m;['direct','api'].forEach(v=>{document.getElementById('view-'+v).classList.toggle('show',v===m);document.getElementById('mbtn-'+v).classList.toggle('active',v===m);});doFilter();}
+function switchMode(m){
+  mode=m;
+  ['direct','api'].forEach(v=>{
+    document.getElementById('view-'+v).classList.toggle('show',v===m);
+    document.getElementById('mbtn-'+v).classList.toggle('active',v===m);
+  });
+  if(m==='direct') showApiFilters(false);
+  doFilter();
+}
 function showCtab(k){document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.cpanel').forEach(p=>p.classList.remove('active'));document.getElementById('ctab-'+k)?.classList.add('active');document.getElementById('cpanel-'+k)?.classList.add('active');doFilter();}
-function showOta(k){document.getElementById('api-ovw').style.display='none';document.querySelectorAll('.ota-panel').forEach(p=>p.classList.remove('show'));document.getElementById('otapanel-'+k)?.classList.add('show');doFilter();}
-function hideOta(k){document.getElementById('api-ovw').style.display='';document.getElementById('otapanel-'+k)?.classList.remove('show');}
+function showOta(k){
+  document.getElementById('api-ovw').style.display='none';
+  document.querySelectorAll('.ota-panel').forEach(p=>p.classList.remove('show'));
+  const panel=document.getElementById('otapanel-'+k);
+  if(panel){
+    panel.classList.add('show');
+    const tbl=panel.querySelector('.ht');
+    showApiFilters(true);
+    populateApiFilters(tbl);
+    doFilter();
+  }
+}
+function hideOta(k){
+  document.getElementById('api-ovw').style.display='';
+  document.getElementById('otapanel-'+k)?.classList.remove('show');
+  showApiFilters(false);
+}
 function togAll(el){const tbl=el.closest('table');tbl.querySelectorAll('tbody .row-check').forEach(cb=>{const r=cb.closest('tr');if(r.style.display!=='none'){cb.checked=el.checked;r.classList.toggle('selected',el.checked);}});refreshBulk(tbl.id.replace('ht-',''),tbl);}
 function updBulk(cb){const row=cb.closest('tr');row.classList.toggle('selected',cb.checked);const tbl=cb.closest('table');refreshBulk(tbl.id.replace('ht-',''),tbl);}
 function refreshBulk(k,tbl){const n=tbl.querySelectorAll('tbody .row-check:checked').length;const bar=document.getElementById('bulk-'+k);const bc=document.getElementById('bc-'+k);if(bar)bar.style.display=n>0?'flex':'none';if(bc)bc.textContent=n+' hotel'+(n!==1?'s':'')+' selected';}
 function clearSel(k){const tbl=document.getElementById('ht-'+k);if(!tbl)return;tbl.querySelectorAll('.row-check').forEach(cb=>{cb.checked=false;cb.closest('tr').classList.remove('selected');});const ca=tbl.querySelector('.chk-all');if(ca)ca.checked=false;document.getElementById('bulk-'+k).style.display='none';}
 function applyBulk(k){const tbl=document.getElementById('ht-'+k);if(!tbl)return;const staff=document.getElementById('bs-staff-'+k)?.value;const status=document.getElementById('bs-status-'+k)?.value;const comm=document.getElementById('bs-comm-'+k)?.value;const fit=document.getElementById('bs-fit-'+k)?.value;const git=document.getElementById('bs-git-'+k)?.value;const sel=tbl.querySelectorAll('tbody .row-check:checked');if(!sel.length){toast('Select hotels first');return;}sel.forEach(cb=>{const row=cb.closest('tr');if(staff){const el=row.querySelector('.staff-sel');if(el)el.value=staff;}if(status){const el=row.querySelector('.status-sel');if(el){el.value=status;el.setAttribute('data-v',status);}colorRow(row);}if(comm){const el=row.querySelector('.comm-sel');if(el)el.value=comm;}if(fit){const el=row.querySelector('.fit-rate');if(el)el.value=fit;}if(git){const el=row.querySelector('.git-rate');if(el)el.value=git;}});clearSel(k);['bs-staff-','bs-status-','bs-comm-'].forEach(id=>{const el=document.getElementById(id+k);if(el)el.value='';} );['bs-fit-','bs-git-'].forEach(id=>{const el=document.getElementById(id+k);if(el)el.value='';} );toast('✓ Applied to '+sel.length+' hotels');scheduleAutoSave(k);}
 function colorRow(row){row.classList.remove('row-contracted','row-in-progress','row-negotiating','row-on-hold');const sel=row.querySelector('.status-sel');if(!sel)return;const v=sel.value;sel.setAttribute('data-v',v);if(v==='contracted')row.classList.add('row-contracted');else if(v==='in-progress')row.classList.add('row-in-progress');else if(v==='negotiating')row.classList.add('row-negotiating');else if(v==='on-hold')row.classList.add('row-on-hold');}
-function doFilter(){const q=(document.getElementById('srch')?.value||'').toLowerCase();const st=document.getElementById('flt-status')?.value||'';const sf=document.getElementById('flt-staff')?.value||'';let tbl=null;if(mode==='direct')tbl=document.querySelector('.cpanel.active .ht');else tbl=document.querySelector('.ota-panel.show .ht');if(!tbl)return;tbl.querySelectorAll('tbody tr').forEach(row=>{const hotel=row.dataset.hotel||'';const city=row.dataset.city||'';const country=row.dataset.country||'';const sup=(row.querySelector('.hsup')?.textContent||'').toLowerCase();const rSt=row.querySelector('.status-sel')?.value||'';const rSf=row.querySelector('.staff-sel')?.value||'';const match=(!q||(hotel+city+country+sup).includes(q))&&(!st||rSt===st)&&(!sf||rSf===sf);row.style.display=match?'':'none';});}
+function doFilter(){
+  const q=(document.getElementById('srch')?.value||'').toLowerCase();
+  const st=document.getElementById('flt-status')?.value||'';
+  const sf=document.getElementById('flt-staff')?.value||'';
+  const fc=document.getElementById('flt-country')?.value||'';
+  const fci=document.getElementById('flt-city')?.value||'';
+  let tbl=null;
+  if(mode==='direct') tbl=document.querySelector('.cpanel.active .ht');
+  else tbl=document.querySelector('.ota-panel.show .ht');
+  if(!tbl) return;
+  tbl.querySelectorAll('tbody tr').forEach(row=>{
+    const hotel=row.dataset.hotel||'';
+    const city=row.dataset.city||'';
+    const country=row.dataset.country||'';
+    const sup=(row.querySelector('.sup-name')?.textContent||'').toLowerCase();
+    const rSt=row.querySelector('.status-sel')?.value||'';
+    const rSf=row.querySelector('.staff-sel')?.value||'';
+    const match=(!q||(hotel+city+country+sup).includes(q))
+      &&(!st||rSt===st)
+      &&(!sf||rSf===sf)
+      &&(!fc||country===fc)
+      &&(!fci||city===fci);
+    row.style.display=match?'':'none';
+  });
+  // When country filter changes, update city dropdown
+  if(fc) populateCityFilter(tbl, fc);
+}
+
+function populateApiFilters(tbl){
+  const countrySel=document.getElementById('flt-country');
+  const citySel=document.getElementById('flt-city');
+  if(!countrySel||!citySel||!tbl) return;
+  // Collect unique countries and cities
+  const countries=new Set(), cities=new Set();
+  tbl.querySelectorAll('tbody tr').forEach(row=>{
+    if(row.dataset.country) countries.add(row.dataset.country);
+    if(row.dataset.city) cities.add(row.dataset.city);
+  });
+  // Populate country
+  const prevC=countrySel.value;
+  countrySel.innerHTML='<option value="">All Countries</option>';
+  [...countries].sort().forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c; o.textContent=c;
+    if(c===prevC) o.selected=true;
+    countrySel.appendChild(o);
+  });
+  // Populate city
+  const prevCi=citySel.value;
+  citySel.innerHTML='<option value="">All Cities</option>';
+  [...cities].sort().forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c; o.textContent=c;
+    if(c===prevCi) o.selected=true;
+    citySel.appendChild(o);
+  });
+}
+
+function populateCityFilter(tbl, country){
+  const citySel=document.getElementById('flt-city');
+  if(!citySel) return;
+  const cities=new Set();
+  tbl.querySelectorAll('tbody tr').forEach(row=>{
+    if(!country||row.dataset.country===country) cities.add(row.dataset.city);
+  });
+  const prev=citySel.value;
+  citySel.innerHTML='<option value="">All Cities</option>';
+  [...cities].sort().forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c; o.textContent=c;
+    if(c===prev) o.selected=true;
+    citySel.appendChild(o);
+  });
+}
+
+function showApiFilters(show){
+  document.getElementById('flt-country').style.display=show?'':'none';
+  document.getElementById('flt-city').style.display=show?'':'none';
+  if(!show){
+    document.getElementById('flt-country').value='';
+    document.getElementById('flt-city').value='';
+  }
+}
 function getRowData(row){return{fit:row.querySelector('.fit-rate')?.value||'',git:row.querySelector('.git-rate')?.value||'',terms:row.querySelector('.terms-sel')?.value||'',cancel:row.querySelector('.cancel-sel')?.value||'',comm:row.querySelector('.comm-sel')?.value||'',staff:row.querySelector('.staff-sel')?.value||'',status:row.querySelector('.status-sel')?.value||'',notes:row.querySelector('.ni')?.value||''};}
 function savePanel(k){const tbl=document.getElementById('ht-'+k);if(!tbl)return;const saved=[];tbl.querySelectorAll('tbody tr').forEach(r=>saved.push(getRowData(r)));localStorage.setItem('orn5_'+k,JSON.stringify(saved));toast('✓ Saved');}
 function loadPanel(k){const raw=localStorage.getItem('orn5_'+k);if(!raw)return;const data=JSON.parse(raw);const tbl=document.getElementById('ht-'+k);if(!tbl)return;tbl.querySelectorAll('tbody tr').forEach((row,i)=>{if(!data[i])return;const d=data[i];const set=(cls,v)=>{const el=row.querySelector(cls);if(el)el.value=v;};set('.fit-rate',d.fit);set('.git-rate',d.git);set('.terms-sel',d.terms);set('.cancel-sel',d.cancel);set('.comm-sel',d.comm);set('.staff-sel',d.staff);const ss=row.querySelector('.status-sel');if(ss){ss.value=d.status;ss.setAttribute('data-v',d.status);}set('.ni',d.notes);colorRow(row);});}
