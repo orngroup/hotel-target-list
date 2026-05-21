@@ -810,52 +810,10 @@ async function logActivityRemote(action) {
 }
 
 // ── LOGIN WITH FIREBASE INIT ──
-async function doLoginAndInitFirebase() {
-  // Re-use existing auth logic
-  const name = document.getElementById('login-user').value;
-  const pw   = document.getElementById('login-pw').value;
-  const err  = document.getElementById('login-err');
-  if (!name) { err.textContent = 'Please select your name.'; return; }
-  if (!pw)   { err.textContent = 'Please enter your password.'; return; }
-  err.textContent = '';
-  const hash = await sha256(pw);
-  const user = USERS[name];
-  if (!user || hash !== user.hash) {
-    err.textContent = 'Incorrect password. Please try again.';
-    document.getElementById('login-pw').value = '';
-    document.getElementById('login-pw').focus();
-    return;
-  }
-  currentUser = { name, ...user };
-  sessionStorage.setItem('orn_user', JSON.stringify(currentUser));
-  document.getElementById('login-screen').style.display = 'none';
-  showUserBadge(currentUser);
-  logActivity('Signed in');
-  // Init Firebase then load
-  initFirebase();
-  setTimeout(() => { setPresence(currentUser); subscribeAll(); }, 1500);
-  loadAllPanels();
-}
 
-// ── SESSION RESTORE WITH FIREBASE ──
-window.addEventListener('load', () => {
-  if (!isConfigured()) {
-    console.info('%c[ORN] Firebase not configured — running offline. See setup guide to enable live sync.','color:#C9A96E;font-weight:bold;');
-  }
-  const stored = sessionStorage.getItem('orn_user');
-  if (stored) {
-    try {
-      currentUser = JSON.parse(stored);
-      document.getElementById('login-screen').style.display = 'none';
-      showUserBadge(currentUser);
-      initFirebase();
-      setTimeout(() => { setPresence(currentUser); subscribeAll(); }, 1500);
-      loadAllPanels();
-    } catch(e) { sessionStorage.removeItem('orn_user'); }
-  } else {
-    setTimeout(() => document.getElementById('login-user')?.focus(), 100);
-  }
-});
+
+
+// Session restore handled by login script block
 
 window.addEventListener('beforeunload', () => {
   presenceRef?.update({ online: false });
@@ -866,6 +824,7 @@ window.addEventListener('beforeunload', () => {
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+
 
 <!-- HOTEL VIEW MODAL -->
 <div id="hotel-view-modal">
@@ -910,9 +869,9 @@ window.addEventListener('beforeunload', () => {
       <option value="Ankit Aggarwal">Ankit Aggarwal</option>
     </select>
     <div class="login-label">Password</div>
-    <input type="password" class="login-input" id="login-pw" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLoginAndInitFirebase()">
+    <input type="password" class="login-input" id="login-pw" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()">
     <div class="login-error" id="login-err"></div>
-    <button class="login-btn" onclick="doLoginAndInitFirebase()">Sign In →</button>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
     <div class="login-divider"></div>
     <div style="font-size:10px;color:rgba(255,255,255,.2);text-align:center;line-height:1.6;">
       ORN · Orchestrated Rhythms of Nature<br>
@@ -44386,5 +44345,113 @@ function updateSavedByStrip(k,meta){
 }
 
 </script>
+
+<script>
+// ── SELF-CONTAINED LOGIN ──
+// All login logic in one place, runs last, no dependencies
+(function() {
+  var USERS = {
+    'Ajay Kawa':     { hash: '29c6b63488eeda0cf0f2fb4cb404ab85919b652b1141e6fe03f7469dd2c556b6', initials: 'AK', role: 'Chief Product Officer' },
+    'Ashish Yadav':  { hash: '68b529a3a458ed09988f1accb78a4a6999c0425871a2dae917c3a0036632f4b4', initials: 'AY', role: 'Manager' },
+    'Sachin Keni':   { hash: 'eb315fc4366cddf74c3eba2eb206dcfac361a1882263021a2b6037f7e11b78b8', initials: 'SK', role: 'Director' },
+    'Ankit Aggarwal':{ hash: 'c1cab00a0dac8dee7492217a27033d80d50faafdaa9ad865c0ac606122e5d931', initials: 'AA', role: 'Co-Founder' },
+  };
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  window.doLogin = async function() {
+    var nameEl = document.getElementById('login-user');
+    var pwEl   = document.getElementById('login-pw');
+    var errEl  = document.getElementById('login-err');
+    var name   = nameEl ? nameEl.value : '';
+    var pw     = pwEl   ? pwEl.value   : '';
+    if (!name) { if(errEl) errEl.textContent = 'Please select your name.'; return; }
+    if (!pw)   { if(errEl) errEl.textContent = 'Please enter your password.'; return; }
+    if (errEl) errEl.textContent = '';
+    var hash = await sha256(pw);
+    var user = USERS[name];
+    if (!user || hash !== user.hash) {
+      if(errEl) errEl.textContent = 'Incorrect password. Please try again.';
+      if(pwEl)  { pwEl.value = ''; pwEl.focus(); }
+      return;
+    }
+    // SUCCESS
+    window.currentUser = { name: name, initials: user.initials, role: user.role, hash: user.hash };
+    sessionStorage.setItem('orn_user', JSON.stringify(window.currentUser));
+    var screen = document.getElementById('login-screen');
+    if (screen) screen.style.display = 'none';
+    if (typeof showUserBadge === 'function') showUserBadge(window.currentUser);
+    if (typeof logActivity  === 'function') logActivity('Signed in');
+    if (typeof initFirebase === 'function') {
+      initFirebase();
+      setTimeout(function() {
+        if (typeof setPresence   === 'function') setPresence(window.currentUser);
+        if (typeof subscribeAll  === 'function') subscribeAll();
+      }, 1500);
+    }
+    if (typeof loadAllPanels === 'function') loadAllPanels();
+  };
+
+  window.doLogout = function() {
+    if (!confirm('Sign out of the dashboard?')) return;
+    sessionStorage.removeItem('orn_user');
+    window.currentUser = null;
+    var badge = document.getElementById('user-badge');
+    var screen = document.getElementById('login-screen');
+    if (badge)  badge.style.display  = 'none';
+    if (screen) screen.style.display = 'flex';
+    var pwEl = document.getElementById('login-pw');
+    var errEl = document.getElementById('login-err');
+    if (pwEl)  pwEl.value = '';
+    if (errEl) errEl.textContent = '';
+  };
+
+  // Wire up button and enter key
+  function wireLogin() {
+    var btn = document.querySelector('.login-btn');
+    var inp = document.getElementById('login-pw');
+    if (btn) btn.onclick = window.doLogin;
+    if (inp) inp.onkeydown = function(e) { if (e.key === 'Enter') window.doLogin(); };
+  }
+
+  // Session restore
+  function restoreSession() {
+    var stored = sessionStorage.getItem('orn_user');
+    if (stored) {
+      try {
+        window.currentUser = JSON.parse(stored);
+        var screen = document.getElementById('login-screen');
+        if (screen) screen.style.display = 'none';
+        if (typeof showUserBadge === 'function') showUserBadge(window.currentUser);
+        if (typeof initFirebase  === 'function') {
+          initFirebase();
+          setTimeout(function() {
+            if (typeof setPresence  === 'function') setPresence(window.currentUser);
+            if (typeof subscribeAll === 'function') subscribeAll();
+          }, 1500);
+        }
+        if (typeof loadAllPanels === 'function') loadAllPanels();
+      } catch(e) {
+        sessionStorage.removeItem('orn_user');
+        var sel = document.getElementById('login-user');
+        if (sel) sel.focus();
+      }
+    } else {
+      var sel = document.getElementById('login-user');
+      if (sel) setTimeout(function(){ sel.focus(); }, 100);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { wireLogin(); restoreSession(); });
+  } else {
+    wireLogin(); restoreSession();
+  }
+})();
+</script>
+
 </body>
 </html>
