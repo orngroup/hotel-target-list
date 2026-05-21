@@ -158,9 +158,126 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:poin
 /* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--dark3);border:1px solid var(--gold);color:var(--gold);padding:9px 18px;border-radius:6px;font-size:var(--fsm);font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
+
+/* ── LOGIN SCREEN ── */
+#login-screen {
+  position: fixed; inset: 0; background: #181818;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000; flex-direction: column;
+}
+.login-card {
+  background: #202020; border: 1px solid rgba(201,169,110,.25);
+  border-radius: 12px; padding: 48px 52px; width: 380px;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
+}
+.login-logo {
+  font-family: 'Playfair Display', serif; font-size: 36px;
+  color: #fff; letter-spacing: .02em; margin-bottom: 4px;
+}
+.login-logo span { color: #C9A96E; }
+.login-tagline {
+  font-size: 10px; letter-spacing: .2em; color: rgba(201,169,110,.6);
+  text-transform: uppercase; margin-bottom: 36px;
+}
+.login-label {
+  font-size: 11px; letter-spacing: .14em; color: rgba(255,255,255,.45);
+  text-transform: uppercase; margin-bottom: 8px; align-self: flex-start;
+}
+.login-select, .login-input {
+  width: 100%; background: #2A2A2A; border: 1px solid rgba(201,169,110,.2);
+  border-radius: 6px; padding: 12px 14px; color: #fff;
+  font-size: 14px; font-family: 'Inter', sans-serif; margin-bottom: 18px;
+  transition: border-color .2s;
+}
+.login-select:focus, .login-input:focus {
+  outline: none; border-color: #C9A96E;
+}
+.login-select option { background: #2A2A2A; }
+.login-input::placeholder { color: rgba(255,255,255,.25); }
+.login-btn {
+  width: 100%; background: #C9A96E; color: #181818; border: none;
+  border-radius: 6px; padding: 13px; font-size: 14px; font-weight: 700;
+  font-family: 'Inter', sans-serif; cursor: pointer; margin-top: 6px;
+  transition: background .2s; letter-spacing: .04em;
+}
+.login-btn:hover { background: #E8D4A8; }
+.login-btn:active { transform: scale(.99); }
+.login-error {
+  font-size: 12px; color: #D95F5F; text-align: center;
+  min-height: 18px; margin-top: -10px; margin-bottom: 10px;
+}
+.login-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,169,110,.2), transparent);
+  margin: 20px 0;
+}
+/* ── USER BADGE (top bar) ── */
+#user-badge {
+  display: none; align-items: center; gap: 10px;
+}
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, #C9A96E, #E8D4A8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #181818;
+  flex-shrink: 0;
+}
+.user-info { display: flex; flex-direction: column; }
+.user-name { font-size: 12px; font-weight: 600; color: #fff; }
+.user-role { font-size: 10px; color: rgba(255,255,255,.4); }
+.logout-btn {
+  background: transparent; border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.4); padding: 4px 10px; border-radius: 4px;
+  font-size: 10px; cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: all .2s; letter-spacing: .06em; text-transform: uppercase;
+}
+.logout-btn:hover { border-color: #D95F5F; color: #D95F5F; }
+/* ── ACTIVITY LOG ── */
+#activity-log {
+  position: fixed; bottom: 22px; left: 22px;
+  background: #202020; border: 1px solid rgba(201,169,110,.2);
+  border-radius: 8px; padding: 14px 18px; width: 280px;
+  z-index: 500; display: none;
+}
+.act-title { font-size: 10px; letter-spacing: .14em; color: rgba(201,169,110,.6); text-transform: uppercase; margin-bottom: 10px; }
+.act-entry { font-size: 11px; color: rgba(255,255,255,.5); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.05); display: flex; gap: 8px; }
+.act-who { color: #C9A96E; font-weight: 600; flex-shrink: 0; }
+.act-time { color: rgba(255,255,255,.25); flex-shrink: 0; margin-left: auto; }
 </style>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">ORN<span>·</span></div>
+    <div class="login-tagline">Hotel Contracting Dashboard</div>
+    <div class="login-label">Select your name</div>
+    <select class="login-select" id="login-user">
+      <option value="">— Select user —</option>
+      <option value="Ajay Kawa">Ajay Kawa</option>
+      <option value="Ashish Yadav">Ashish Yadav</option>
+      <option value="Sachin Keni">Sachin Keni</option>
+    </select>
+    <div class="login-label">Password</div>
+    <input type="password" class="login-input" id="login-pw" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="login-error" id="login-err"></div>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-divider"></div>
+    <div style="font-size:10px;color:rgba(255,255,255,.2);text-align:center;line-height:1.6;">
+      ORN · Orchestrated Rhythms of Nature<br>
+      Hotel Contracting · 2025–2026
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY LOG -->
+<div id="activity-log">
+  <div class="act-title">Recent Activity</div>
+  <div id="act-entries"></div>
+</div>
+
 <!-- TOPBAR -->
 <div class="topbar">
   <div style="display:flex;align-items:center;">
@@ -43544,10 +43661,154 @@ function doExport(k,label){const tbl=document.getElementById('ht-'+k);if(!tbl)re
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 document.addEventListener('change',e=>{const row=e.target.closest('tr');if(row&&!e.target.classList.contains('row-check')&&!e.target.classList.contains('chk-all'))colorRow(row);const tbl=e.target.closest('table');if(tbl&&!e.target.classList.contains('row-check')&&!e.target.classList.contains('chk-all'))scheduleAutoSave(tbl.id.replace('ht-',''));} );
 document.addEventListener('input',e=>{const tbl=e.target.closest('table');if(tbl)scheduleAutoSave(tbl.id.replace('ht-',''));} );
-window.addEventListener('load',()=>{
-  loadPanel('Thailand'); loadPanel('India'); loadPanel('UAE'); loadPanel('Switzerland'); loadPanel('France'); loadPanel('Australia'); loadPanel('Singapore'); loadPanel('Italy'); loadPanel('Japan'); loadPanel('United_Kingdom'); loadPanel('Netherlands'); loadPanel('Malaysia'); loadPanel('Maldives'); loadPanel('French_Polynesia'); loadPanel('Vietnam'); loadPanel('Indonesia'); loadPanel('Austria'); loadPanel('Germany'); loadPanel('Finland'); loadPanel('Spain'); loadPanel('Bhutan'); loadPanel('Georgia'); loadPanel('USA'); loadPanel('New_Zealand'); loadPanel('Portugal'); loadPanel('Sri_Lanka'); loadPanel('Azerbaijan'); loadPanel('Norway'); loadPanel('South_Africa'); loadPanel('Russia');
-  loadPanel('Expedia'); loadPanel('Agoda'); loadPanel('Dida_Travels'); loadPanel('TBO'); loadPanel('WebBeds'); loadPanel('HotelBeds'); loadPanel('ARK_Holidays'); loadPanel('GRNConnect'); loadPanel('MakeMyTrip'); loadPanel('Rezlive'); loadPanel('Booking_com');
+// load handled by auth
+
+// ── AUTH ──
+const USERS = {
+  'Ajay Kawa':    { hash: '29c6b63488eeda0cf0f2fb4cb404ab85919b652b1141e6fe03f7469dd2c556b6', initials: 'AK', role: 'Chief Product Officer' },
+  'Ashish Yadav': { hash: '68b529a3a458ed09988f1accb78a4a6999c0425871a2dae917c3a0036632f4b4', initials: 'AY', role: 'Manager' },
+  'Sachin Keni':  { hash: 'eb315fc4366cddf74c3eba2eb206dcfac361a1882263021a2b6037f7e11b78b8', initials: 'SK', role: 'Director' },
+};
+
+let currentUser = null;
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin() {
+  const name = document.getElementById('login-user').value;
+  const pw   = document.getElementById('login-pw').value;
+  const err  = document.getElementById('login-err');
+  if (!name) { err.textContent = 'Please select your name.'; return; }
+  if (!pw)   { err.textContent = 'Please enter your password.'; return; }
+  err.textContent = '';
+  const hash = await sha256(pw);
+  const user = USERS[name];
+  if (!user || hash !== user.hash) {
+    err.textContent = 'Incorrect password. Please try again.';
+    document.getElementById('login-pw').value = '';
+    document.getElementById('login-pw').focus();
+    return;
+  }
+  // Success
+  currentUser = { name, ...user };
+  sessionStorage.setItem('orn_user', JSON.stringify(currentUser));
+  document.getElementById('login-screen').style.display = 'none';
+  showUserBadge(currentUser);
+  logActivity('Signed in');
+  loadAllPanels();
+}
+
+function doLogout() {
+  if (!confirm('Sign out of the dashboard?')) return;
+  sessionStorage.removeItem('orn_user');
+  currentUser = null;
+  document.getElementById('user-badge').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-pw').value = '';
+  document.getElementById('login-err').textContent = '';
+  document.getElementById('activity-log').style.display = 'none';
+}
+
+function showUserBadge(user) {
+  document.getElementById('user-badge').style.display = 'flex';
+  document.getElementById('user-avatar').textContent = user.initials;
+  document.getElementById('user-name-display').textContent = user.name;
+  document.getElementById('user-role-display').textContent = user.role;
+  document.getElementById('activity-log').style.display = 'block';
+}
+
+function logActivity(action) {
+  if (!currentUser) return;
+  const entries = document.getElementById('act-entries');
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'act-entry';
+  div.innerHTML = `<span class="act-who">${currentUser.initials}</span><span>${action}</span><span class="act-time">${now}</span>`;
+  entries.insertBefore(div, entries.firstChild);
+  // Keep max 5 entries
+  while(entries.children.length > 5) entries.removeChild(entries.lastChild);
+}
+
+// Patch savePanel to log activity and tag with user
+const _origSavePanel = savePanel;
+window.savePanel = function(key) {
+  _origSavePanel(key);
+  if (currentUser) logActivity('Saved ' + key.replace(/_/g,' '));
+};
+
+// Patch applyBulk to log
+const _origApplyBulk = applyBulk;
+window.applyBulk = function(key) {
+  _origApplyBulk(key);
+  if (currentUser) logActivity('Bulk applied');
+};
+
+// ── RESTORE SESSION ──
+window.addEventListener('load', () => {
+  const stored = sessionStorage.getItem('orn_user');
+  if (stored) {
+    try {
+      currentUser = JSON.parse(stored);
+      document.getElementById('login-screen').style.display = 'none';
+      showUserBadge(currentUser);
+      loadAllPanels();
+    } catch(e) {
+      sessionStorage.removeItem('orn_user');
+    }
+  } else {
+    // Focus the select on load
+    setTimeout(() => document.getElementById('login-user').focus(), 100);
+  }
 });
+
+function loadAllPanels() {
+  // Called after login — loads saved data for all panels
+  loadPanel('Thailand');
+  loadPanel('India');
+  loadPanel('UAE');
+  loadPanel('Switzerland');
+  loadPanel('France');
+  loadPanel('Australia');
+  loadPanel('Singapore');
+  loadPanel('Italy');
+  loadPanel('Japan');
+  loadPanel('United_Kingdom');
+  loadPanel('Netherlands');
+  loadPanel('Malaysia');
+  loadPanel('Maldives');
+  loadPanel('French_Polynesia');
+  loadPanel('Vietnam');
+  loadPanel('Indonesia');
+  loadPanel('Austria');
+  loadPanel('Germany');
+  loadPanel('Finland');
+  loadPanel('Spain');
+  loadPanel('Bhutan');
+  loadPanel('Georgia');
+  loadPanel('USA');
+  loadPanel('New_Zealand');
+  loadPanel('Portugal');
+  loadPanel('Sri_Lanka');
+  loadPanel('Azerbaijan');
+  loadPanel('Norway');
+  loadPanel('South_Africa');
+  loadPanel('Russia');
+  loadPanel('Expedia');
+  loadPanel('Agoda');
+  loadPanel('Dida_Travels');
+  loadPanel('TBO');
+  loadPanel('WebBeds');
+  loadPanel('HotelBeds');
+  loadPanel('ARK_Holidays');
+  loadPanel('GRNConnect');
+  loadPanel('MakeMyTrip');
+  loadPanel('Rezlive');
+  loadPanel('Booking_com');
+}
+
 </script>
 </body>
 </html>
