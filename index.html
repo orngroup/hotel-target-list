@@ -427,7 +427,8 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:poin
   flex-shrink:0;display:none;}
 </style>
   <!-- Firebase SDK v10 -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script>
 // ═══════════════════════════════════════
 // HOTEL SOURCE VIEW
 // ═══════════════════════════════════════
@@ -449,7 +450,8 @@ function closeHotelView() {
   document.getElementById('hvm-results').innerHTML = `<div class="hvm-empty"><span class="hvm-empty-icon">🔍</span>Search any hotel above to see a full breakdown of every source<br>— Direct contracts, Expedia, Agoda, Dida Travels and more —<br>with revenue and nights split by 2025 and 2026.</div>`;
 }
 // Close on backdrop click
-document.getElementById('hotel-view-modal').addEventListener('click', function(e) {
+const _hvm = document.getElementById('hotel-view-modal');
+if (_hvm) _hvm.addEventListener('click', function(e) {
   if (e.target === this) closeHotelView();
 });
 // Close on Escape
@@ -669,6 +671,8 @@ function renderHotelView(key, hotel, city) {
     </table>
   `;
 }
+</script>
+
 
 // ════════════════════════════════════════════════════════
 // FIREBASE CONFIGURATION
@@ -820,7 +824,6 @@ window.addEventListener('beforeunload', () => {
   Object.values(activeListeners).forEach(unsub => unsub());
 });
 
-</script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
