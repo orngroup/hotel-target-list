@@ -695,6 +695,109 @@ body.light .theme-toggle:hover { border-color:#8B4E0A;color:#8B4E0A; }
 .act-entry { font-size:11px; color:var(--muted); padding:4px 0; border-bottom:1px solid var(--border2); display:flex; gap:8px; }
 .act-who { color:var(--gold); font-weight:600; flex-shrink:0; }
 .act-time { color:var(--muted); opacity:.5; flex-shrink:0; margin-left:auto; }
+
+/* ── YEAR FILTER ── */
+.yr-filter-wrap{display:flex;gap:4px;align-items:center;margin:0 12px;}
+.yr-btn{background:transparent;border:1px solid var(--border);border-radius:14px;
+  color:var(--muted);font-size:11px;font-weight:600;font-family:'Inter',sans-serif;
+  padding:4px 12px;cursor:pointer;transition:all .2s;}
+.yr-btn:hover{border-color:var(--gold);color:var(--gold);}
+.yr-btn.active{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+
+/* ── TOP 100 ── */
+.t100-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px;}
+.t100-card{background:var(--dark2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;}
+.t100-card:hover{border-color:var(--border);}
+.t100-hdr{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;}
+.t100-rank{font-family:'Playfair Display',serif;font-size:22px;font-style:italic;
+  color:var(--gold);width:36px;flex-shrink:0;text-align:center;}
+.t100-info{flex:1;min-width:0;}
+.t100-name{font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+.t100-meta{font-size:11px;color:var(--muted);}
+.t100-pills{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap;}
+.t100-pill{font-size:10px;background:rgba(255,255,255,.06);color:var(--muted);
+  padding:2px 7px;border-radius:5px;}
+.t100-rev-col{text-align:right;flex-shrink:0;}
+.t100-rev{font-size:15px;font-weight:700;color:var(--gold);
+  font-family:'Playfair Display',serif;font-style:italic;}
+.t100-arr{font-size:11px;color:var(--muted);margin-top:2px;}
+.t100-sources{display:none;border-top:1px solid var(--border2);}
+.t100-src-row{display:flex;align-items:center;gap:12px;padding:10px 18px;
+  border-bottom:1px solid rgba(255,255,255,.04);}
+.t100-src-row:last-child{border-bottom:none;}
+.t100-src-name{flex:1;font-size:12px;font-weight:600;color:var(--white);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.t100-src-meta{font-size:11px;color:var(--muted);}
+.t100-src-rate{font-size:13px;font-weight:700;text-align:right;flex-shrink:0;}
+.t100-src-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;display:block;text-align:right;margin-top:2px;}
+.t100-btns{display:flex;gap:8px;padding:10px 18px;background:rgba(255,255,255,.02);}
+.t100-btn{flex:1;padding:8px;border-radius:6px;font-size:11px;font-weight:700;
+  font-family:'Inter',sans-serif;cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--muted);transition:all .2s;}
+.t100-btn:hover{border-color:var(--gold);color:var(--gold);}
+.t100-btn-share{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+.t100-btn-share:hover{background:var(--gold2);}
+
+/* ── RATE COMPARISON ── */
+.rate-card{background:var(--dark2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;}
+.rate-card:hover{border-color:var(--border);}
+.rate-card-hdr{padding:14px 18px 10px;border-bottom:1px solid var(--border2);}
+.rate-hotel{font-size:13px;font-weight:700;color:var(--white);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;}
+.rate-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;
+  border-radius:5px;margin-left:6px;vertical-align:middle;}
+.rate-badge.cheaper{background:rgba(76,175,125,.15);color:#4CAF7D;}
+.rate-badge.pricier{background:rgba(216,95,95,.15);color:#D95F5F;}
+.rate-badge.equal{background:rgba(255,255,255,.06);color:var(--muted);}
+.rate-sub{font-size:11px;color:var(--muted);}
+.rate-row{display:flex;align-items:center;gap:10px;padding:9px 18px;
+  border-bottom:1px solid rgba(255,255,255,.04);}
+.rate-row:last-child{border-bottom:none;}
+.rate-icon{font-size:15px;flex-shrink:0;width:20px;text-align:center;}
+.rate-src{flex:1;min-width:0;}
+.rate-src-name{font-size:12px;font-weight:600;color:var(--white);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rate-src-meta{font-size:10px;color:var(--muted);}
+.rate-bar-track{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:3px;}
+.rate-bar-fill{height:100%;border-radius:2px;}
+.rate-avg{font-size:13px;font-weight:700;flex-shrink:0;text-align:right;min-width:64px;}
+.rate-avg.best{color:#4CAF7D;}.rate-avg.worst{color:#D95F5F;}.rate-avg.mid{color:var(--gold);}
+.rate-nts{font-size:10px;color:var(--muted);text-align:right;}
+
+/* ── SHARE MODAL ── */
+#web-share-modal{display:none;position:fixed;inset:0;z-index:6000;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:40px 20px;}
+#web-share-modal.open{display:flex;flex-direction:column;gap:14px;}
+.wsm-card{background:#1E1E1E;border:1px solid rgba(201,169,110,.3);border-radius:14px;
+  padding:24px;width:100%;max-width:440px;max-height:70vh;overflow-y:auto;}
+.wsm-logo{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);margin-bottom:12px;}
+.wsm-hotel{font-size:18px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.wsm-city{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.wsm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.wsm-kpi{background:rgba(255,255,255,.05);border-radius:8px;padding:10px;}
+.wsm-kv{font-size:16px;font-weight:700;color:var(--gold);}
+.wsm-kl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+.wsm-src-row{display:flex;justify-content:space-between;padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);}
+.wsm-src-row:last-child{border-bottom:none;}
+.wsm-src-name{font-size:12px;color:var(--white);font-weight:500;}
+.wsm-src-rate{font-size:13px;font-weight:700;color:var(--gold);}
+.wsm-footer{font-size:10px;color:rgba(255,255,255,.2);text-align:center;margin-top:12px;}
+.wsm-actions{display:flex;gap:10px;width:100%;max-width:440px;}
+.wsm-btn{flex:1;padding:12px;border-radius:8px;border:none;font-size:13px;
+  font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;}
+.wsm-btn-copy{background:var(--gold);color:var(--dark);}
+.wsm-btn-copy:hover{background:var(--gold2);}
+.wsm-btn-close{background:rgba(255,255,255,.1);color:var(--white);}
+.light .wsm-card{background:#fff;border-color:rgba(100,60,10,.3);}
+.light .wsm-hotel{color:#0A0A0A;}.light .wsm-city{color:#555;}
+.light .wsm-kpi{background:rgba(0,0,0,.04);}
+.light .wsm-kv{color:#8B4E0A;}.light .wsm-kl{color:#555;}
+.light .wsm-src-name{color:#0A0A0A;}.light .wsm-src-rate{color:#8B4E0A;}
+.light .wsm-footer{color:rgba(0,0,0,.2);}
+.light .wsm-btn-close{background:rgba(0,0,0,.08);color:#333;}
 </style>
   <!-- Firebase SDK v10 -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -702,6 +805,7 @@ body.light .theme-toggle:hover { border-color:#8B4E0A;color:#8B4E0A; }
 </head>
 <body>
 <div id="conflict-banner"></div>
+<div id="web-share-modal" onclick="closeWebShare(event)"><div class="wsm-card" id="wsm-content"></div><div class="wsm-actions"><button class="wsm-btn wsm-btn-copy" onclick="copyWebShare()">📋 Copy & Share</button><button class="wsm-btn wsm-btn-close" onclick="closeWebShare()">Close</button></div></div>
 <div id="activity-log"><div class="act-title">Recent Activity</div><div id="act-entries"></div></div>
 
 <!-- HOTEL VIEW MODAL -->
@@ -798,6 +902,17 @@ body.light .theme-toggle:hover { border-color:#8B4E0A;color:#8B4E0A; }
   <button class="mbtn" id="mbtn-hotelview" onclick="openHotelView()" style="margin-left:4px;">
     🏨 Hotel Source View
   </button>
+  <button class="mbtn" id="mbtn-top100" onclick="switchMode('top100')" style="margin-left:4px;">
+    🏆 Top 100
+  </button>
+  <button class="mbtn" id="mbtn-rates" onclick="switchMode('rates')" style="margin-left:4px;">
+    ⚖️ Rates
+  </button>
+  <div class="yr-filter-wrap">
+    <button class="yr-btn active" id="yrb-all"  onclick="setYr('all')">All</button>
+    <button class="yr-btn" id="yrb-2025" onclick="setYr('2025')">2025</button>
+    <button class="yr-btn" id="yrb-2026" onclick="setYr('2026')">2026</button>
+  </div>
   <div class="msplit">
     <span>Direct vs API:</span>
     <div class="splitbar">
@@ -838,6 +953,16 @@ body.light .theme-toggle:hover { border-color:#8B4E0A;color:#8B4E0A; }
 </div>
 <!-- MAIN -->
 <div class="main">
+  <!-- TOP 100 VIEW -->
+  <div class="view" id="view-top100">
+    <div style="flex:1;overflow-y:auto;padding:20px 22px;" id="top100-content"></div>
+  </div>
+
+  <!-- RATE COMPARISON VIEW -->
+  <div class="view" id="view-rates">
+    <div style="flex:1;overflow-y:auto;padding:20px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;align-content:start;" id="rates-content"></div>
+  </div>
+
   <!-- DIRECT -->
   <div class="view show" id="view-direct">
     <div class="sidebar"><button class="ctab active" onclick="showCtab('Thailand')" id="ctab-Thailand">🇹🇭 Thailand<span class="ctab-rev">$1,922,218</span></button><button class="ctab " onclick="showCtab('India')" id="ctab-India">🇮🇳 India<span class="ctab-rev">$1,210,876</span></button><button class="ctab " onclick="showCtab('UAE')" id="ctab-UAE">🇦🇪 UAE<span class="ctab-rev">$1,011,047</span></button><button class="ctab " onclick="showCtab('Switzerland')" id="ctab-Switzerland">🇨🇭 Switzerland<span class="ctab-rev">$964,326</span></button><button class="ctab " onclick="showCtab('France')" id="ctab-France">🇫🇷 France<span class="ctab-rev">$724,740</span></button><button class="ctab " onclick="showCtab('Australia')" id="ctab-Australia">🇦🇺 Australia<span class="ctab-rev">$644,264</span></button><button class="ctab " onclick="showCtab('Singapore')" id="ctab-Singapore">🇸🇬 Singapore<span class="ctab-rev">$625,571</span></button><button class="ctab " onclick="showCtab('Italy')" id="ctab-Italy">🇮🇹 Italy<span class="ctab-rev">$544,301</span></button><button class="ctab " onclick="showCtab('Japan')" id="ctab-Japan">🇯🇵 Japan<span class="ctab-rev">$347,532</span></button><button class="ctab " onclick="showCtab('United_Kingdom')" id="ctab-United_Kingdom">🇬🇧 United Kingdom<span class="ctab-rev">$258,588</span></button><button class="ctab " onclick="showCtab('Netherlands')" id="ctab-Netherlands">🇳🇱 Netherlands<span class="ctab-rev">$255,057</span></button><button class="ctab " onclick="showCtab('Malaysia')" id="ctab-Malaysia">🇲🇾 Malaysia<span class="ctab-rev">$246,789</span></button><button class="ctab " onclick="showCtab('Maldives')" id="ctab-Maldives">🇲🇻 Maldives<span class="ctab-rev">$244,727</span></button><button class="ctab " onclick="showCtab('French_Polynesia')" id="ctab-French_Polynesia">🇵🇫 French Polynesia<span class="ctab-rev">$241,045</span></button><button class="ctab " onclick="showCtab('Vietnam')" id="ctab-Vietnam">🇻🇳 Vietnam<span class="ctab-rev">$233,816</span></button><button class="ctab " onclick="showCtab('Indonesia')" id="ctab-Indonesia">🇮🇩 Indonesia<span class="ctab-rev">$163,038</span></button><button class="ctab " onclick="showCtab('Austria')" id="ctab-Austria">🇦🇹 Austria<span class="ctab-rev">$151,411</span></button><button class="ctab " onclick="showCtab('Germany')" id="ctab-Germany">🇩🇪 Germany<span class="ctab-rev">$138,518</span></button><button class="ctab " onclick="showCtab('Finland')" id="ctab-Finland">🇫🇮 Finland<span class="ctab-rev">$98,407</span></button><button class="ctab " onclick="showCtab('Spain')" id="ctab-Spain">🇪🇸 Spain<span class="ctab-rev">$88,034</span></button><button class="ctab " onclick="showCtab('Bhutan')" id="ctab-Bhutan">🇧🇹 Bhutan<span class="ctab-rev">$85,476</span></button><button class="ctab " onclick="showCtab('Georgia')" id="ctab-Georgia">🇬🇪 Georgia<span class="ctab-rev">$79,043</span></button><button class="ctab " onclick="showCtab('USA')" id="ctab-USA">🇺🇸 USA<span class="ctab-rev">$72,569</span></button><button class="ctab " onclick="showCtab('New_Zealand')" id="ctab-New_Zealand">🇳🇿 New Zealand<span class="ctab-rev">$69,312</span></button><button class="ctab " onclick="showCtab('Portugal')" id="ctab-Portugal">🇵🇹 Portugal<span class="ctab-rev">$66,173</span></button><button class="ctab " onclick="showCtab('Sri_Lanka')" id="ctab-Sri_Lanka">🇱🇰 Sri Lanka<span class="ctab-rev">$65,148</span></button><button class="ctab " onclick="showCtab('Azerbaijan')" id="ctab-Azerbaijan">🇦🇿 Azerbaijan<span class="ctab-rev">$53,749</span></button><button class="ctab " onclick="showCtab('Norway')" id="ctab-Norway">🇳🇴 Norway<span class="ctab-rev">$49,764</span></button><button class="ctab " onclick="showCtab('South_Africa')" id="ctab-South_Africa">🌍 South Africa<span class="ctab-rev">$36,465</span></button><button class="ctab " onclick="showCtab('Russia')" id="ctab-Russia">🌍 Russia<span class="ctab-rev">$30,878</span></button></div>
@@ -44036,12 +44161,14 @@ body.light .theme-toggle:hover { border-color:#8B4E0A;color:#8B4E0A; }
 let mode='direct';
 function switchMode(m){
   mode=m;
-  ['direct','api'].forEach(v=>{
-    document.getElementById('view-'+v).classList.toggle('show',v===m);
-    document.getElementById('mbtn-'+v).classList.toggle('active',v===m);
+  ['direct','api','top100','rates'].forEach(v=>{
+    document.getElementById('view-'+v)?.classList.toggle('show',v===m);
+    document.getElementById('mbtn-'+v)?.classList.toggle('active',v===m);
   });
   if(m==='direct') showApiFilters(false);
-  doFilter();
+  if(m==='top100') { showApiFilters(false); renderTop100(); }
+  if(m==='rates')  { showApiFilters(false); renderRates(); }
+  if(m==='direct'||m==='api') doFilter();
 }
 function showCtab(k){document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.cpanel').forEach(p=>p.classList.remove('active'));document.getElementById('ctab-'+k)?.classList.add('active');document.getElementById('cpanel-'+k)?.classList.add('active');doFilter();}
 function showOta(k){
@@ -44580,6 +44707,245 @@ function renderHotelView(key, hotel, city) {
   `;
 }
 
+
+// ── YEAR FILTER ──
+let activeYr = 'all';
+
+function setYr(yr) {
+  activeYr = yr;
+  ['all','2025','2026'].forEach(y => {
+    document.getElementById('yrb-'+y)?.classList.toggle('active', y===yr);
+  });
+  // Re-render whichever panel is active
+  if (mode==='top100') renderTop100();
+  if (mode==='rates')  renderRates();
+}
+
+function getRevYr(s) {
+  if (activeYr==='2025') return parseFloat(s.rev_2025||0);
+  if (activeYr==='2026') return parseFloat(s.rev_2026||0);
+  return parseFloat(s.total_rev||0);
+}
+function getNtsYr(s) {
+  if (activeYr==='2025') return parseInt(s.nts_2025||0);
+  if (activeYr==='2026') return parseInt(s.nts_2026||0);
+  return parseInt(s.total_nights||0);
+}
+function getHotelRev(key) {
+  return (HVM_LOOKUP[key]||[]).reduce((a,s)=>a+getRevYr(s),0);
+}
+function getHotelNts(key) {
+  return (HVM_LOOKUP[key]||[]).reduce((a,s)=>a+getNtsYr(s),0);
+}
+function fmtW(n) { return '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:0}); }
+
+// ── TOP 100 ──
+function renderTop100() {
+  const el = document.getElementById('top100-content');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--muted);font-size:12px;margin-bottom:14px;">Loading...</div>';
+
+  const ranked = HVM_AUTOCOMPLETE
+    .map(h => ({...h, fRev: getHotelRev(h.key), fNts: getHotelNts(h.key)}))
+    .filter(h => h.fRev > 0)
+    .sort((a,b) => b.fRev - a.fRev)
+    .slice(0,100);
+
+  const yrLabel = activeYr==='all'?'2025–2026':activeYr;
+  el.innerHTML = `<h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--white);margin-bottom:16px;">
+    🏆 Top 100 Hotels by Revenue <span style="font-size:12px;color:var(--muted);font-family:'Inter',sans-serif;">· ${yrLabel}</span></h3>
+    <div class="t100-grid" id="t100-grid"></div>`;
+
+  const grid = document.getElementById('t100-grid');
+  const OTA_ICONS = {'Expedia':'🟦','Agoda':'🔴','Dida':'🟠','TBO':'🟤','WebBeds':'🟣','HotelBeds':'🔵','MakeMyTrip':'❇️'};
+  const getIcon = src => { const m=Object.entries(OTA_ICONS).find(([k])=>src.includes(k)); return m?m[1]:(src==='Direct / Contracted'?'🤝':'🌐'); };
+
+  ranked.forEach((h, i) => {
+    const avg = h.fNts > 0 ? h.fRev/h.fNts : 0;
+    const sources = HVM_LOOKUP[h.key] || [];
+    const card = document.createElement('div');
+    card.className = 't100-card';
+
+    const allSrcs = sources.map(s => ({
+      ...s, sRev: getRevYr(s), sNts: getNtsYr(s),
+      sAvg: getNtsYr(s)>0 ? getRevYr(s)/getNtsYr(s) : 0
+    })).filter(s=>s.sNts>0).sort((a,b)=>a.sAvg-b.sAvg);
+
+    card.innerHTML = `
+      <div class="t100-hdr" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block';this.querySelector('.t100-arr').textContent=this.nextElementSibling.style.display==='block'?'⌄ hide sources':'› show sources'">
+        <div class="t100-rank">${i+1}</div>
+        <div class="t100-info">
+          <div class="t100-name">${h.hotel}</div>
+          <div class="t100-meta">📍 ${h.city}</div>
+          <div class="t100-pills">
+            <span class="t100-pill">🌙 ${Number(h.fNts).toLocaleString()} nts</span>
+            <span class="t100-pill">⌀ ${fmtW(avg)}/nt</span>
+            <span class="t100-pill">${h.source_count} source${h.source_count!==1?'s':''}</span>
+          </div>
+        </div>
+        <div class="t100-rev-col">
+          <div class="t100-rev">${fmtW(h.fRev)}</div>
+          <div class="t100-arr">› show sources</div>
+        </div>
+      </div>
+      <div class="t100-sources">
+        ${allSrcs.map(s => {
+          const isDirect = s.Pricing==='Contracted';
+          const avgs = allSrcs.map(x=>x.sAvg).filter(a=>a>0);
+          const isMin = s.sAvg === Math.min(...avgs);
+          const isMax = s.sAvg === Math.max(...avgs) && Math.min(...avgs)!==Math.max(...avgs);
+          const barW = Math.max(...avgs)>0?(s.sAvg/Math.max(...avgs)*100).toFixed(0):0;
+          const barC = isMin?'#4CAF7D':isMax?'#D95F5F':'#C9A96E';
+          return `<div class="t100-src-row">
+            <span style="font-size:15px;flex-shrink:0;">${getIcon(s.Source)}</span>
+            <div class="t100-src">
+              <div class="t100-src-name">${s.Source==='Direct / Contracted'?'Direct Contract':s.Source}</div>
+              <div class="t100-src-meta">${Number(s.sNts).toLocaleString()} nights · ${fmtW(s.sRev)}</div>
+              <div class="rate-bar-track"><div class="rate-bar-fill" style="width:${barW}%;background:${barC}"></div></div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <div class="t100-src-rate" style="color:${isMin?'#4CAF7D':isMax?'#D95F5F':'var(--gold)'}">${fmtW(s.sAvg)}/nt</div>
+              <span class="t100-src-badge" style="background:${isDirect?'rgba(76,175,125,.12)':'rgba(91,155,213,.1)'};color:${isDirect?'#4CAF7D':'#5B9BD5'}">${isDirect?'DIRECT':'API'}</span>
+            </div>
+          </div>`;
+        }).join('')}
+        <div class="t100-btns">
+          <button class="t100-btn" onclick="openHotelViewKey('${encodeURIComponent(h.key)}')">🏨 Full Hotel View</button>
+          <button class="t100-btn t100-btn-share" onclick="openWebShare('${encodeURIComponent(h.key)}')">↑ Share</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function openHotelViewKey(encodedKey) {
+  const key = decodeURIComponent(encodedKey);
+  const parts = key.split('||');
+  document.getElementById('hvm-inp').value = parts[0] + '  —  ' + parts[1];
+  document.getElementById('hvm-dd').classList.remove('open');
+  renderHotelView(key, parts[0], parts[1]);
+  openHotelView();
+}
+
+// ── RATE COMPARISON ──
+function renderRates() {
+  const el = document.getElementById('rates-content');
+  if (!el) return;
+  el.innerHTML = '<div style="color:var(--muted);font-size:12px;grid-column:1/-1;margin-bottom:14px;">Building rate comparison...</div>';
+
+  const OTA_ICONS = {'Expedia':'🟦','Agoda':'🔴','Dida':'🟠','TBO':'🟤','WebBeds':'🟣','HotelBeds':'🔵','MakeMyTrip':'❇️'};
+  const getIcon = src => { const m=Object.entries(OTA_ICONS).find(([k])=>src.includes(k)); return m?m[1]:(src==='Direct / Contracted'?'🤝':'🌐'); };
+
+  const comparisons = [];
+  Object.entries(HVM_LOOKUP).forEach(([key, sources]) => {
+    const enriched = sources.map(s=>({...s,fRev:getRevYr(s),fNts:getNtsYr(s),
+      fAvg:getNtsYr(s)>5?getRevYr(s)/getNtsYr(s):0})).filter(s=>s.fNts>5);
+    if (!enriched.some(s=>s.Pricing==='Contracted')) return;
+    if (!enriched.some(s=>s.Pricing!=='Contracted')) return;
+    const totalRev = enriched.reduce((a,s)=>a+s.fRev,0);
+    if (totalRev < 1000) return;
+    const h = HVM_AUTOCOMPLETE.find(x=>x.key===key);
+    comparisons.push({key, hotel:h?.hotel||key.split('||')[0], city:h?.city||key.split('||')[1], enriched, totalRev});
+  });
+  comparisons.sort((a,b)=>b.totalRev-a.totalRev);
+
+  const yrLabel = activeYr==='all'?'2025–2026':activeYr;
+  el.innerHTML = `<div style="grid-column:1/-1;margin-bottom:8px;font-size:12px;color:var(--muted);">
+    ${comparisons.length} hotels with direct + OTA rates · ${yrLabel}</div>`;
+
+  comparisons.slice(0,80).forEach(c => {
+    const avgs = c.enriched.map(s=>s.fAvg).filter(a=>a>0);
+    const minAvg=Math.min(...avgs), maxAvg=Math.max(...avgs), spread=maxAvg-minAvg;
+    const directSrcs = c.enriched.filter(s=>s.Pricing==='Contracted');
+    const directAvg  = directSrcs.length ? directSrcs.reduce((a,s)=>a+s.fAvg,0)/directSrcs.length : 0;
+    const otaMin = Math.min(...c.enriched.filter(s=>s.Pricing!=='Contracted').map(s=>s.fAvg).filter(a=>a>0));
+    const directWins = directAvg <= otaMin + 1;
+    const badge = spread > 5
+      ? `<span class="rate-badge ${directWins?'cheaper':'pricier'}">${directWins?'Direct cheaper ✓':'OTA cheaper ⚠'}</span>`
+      : '<span class="rate-badge equal">Similar rates</span>';
+    const sorted = [...c.enriched].sort((a,b)=>a.fAvg-b.fAvg);
+    const card = document.createElement('div');
+    card.className = 'rate-card';
+    card.innerHTML = `
+      <div class="rate-card-hdr">
+        <div class="rate-hotel">${c.hotel} ${badge}</div>
+        <div class="rate-sub">📍 ${c.city}${spread>5?' · '+fmtW(spread)+'/nt spread':''} · <a href="#" onclick="openWebShare('${encodeURIComponent(c.key)}');return false;" style="color:var(--gold)">share ↑</a></div>
+      </div>
+      ${sorted.map(s=>{
+        const isMin=s.fAvg===minAvg,isMax=s.fAvg===maxAvg&&minAvg!==maxAvg;
+        const barW=maxAvg>0?(s.fAvg/maxAvg*100).toFixed(0):0;
+        const barC=isMin?'#4CAF7D':isMax?'#D95F5F':'#C9A96E';
+        return `<div class="rate-row">
+          <span class="rate-icon">${getIcon(s.Source)}</span>
+          <div class="rate-src">
+            <div class="rate-src-name">${s.Source==='Direct / Contracted'?'Direct Contract':s.Source}</div>
+            <div class="rate-src-meta">${Number(s.fNts).toLocaleString()} nights · ${fmtW(s.fRev)}</div>
+            <div class="rate-bar-track"><div class="rate-bar-fill" style="width:${barW}%;background:${barC}"></div></div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;">
+            <div class="rate-avg ${isMin?'best':isMax?'worst':'mid'}">${fmtW(s.fAvg)}<span style="font-size:9px;font-weight:400">/nt</span></div>
+            <div class="rate-nts">${Number(s.fNts).toLocaleString()} nts</div>
+          </div>
+        </div>`;
+      }).join('')}`;
+    el.appendChild(card);
+  });
+}
+
+// ── WEB SHARE MODAL ──
+let webShareData = null;
+
+function openWebShare(encodedKey) {
+  const key = decodeURIComponent(encodedKey);
+  const sources = HVM_LOOKUP[key]; if(!sources) return;
+  const h = HVM_AUTOCOMPLETE.find(x=>x.key===key);
+  const enriched = sources.map(s=>({...s,fRev:getRevYr(s),fNts:getNtsYr(s),
+    fAvg:getNtsYr(s)>0?getRevYr(s)/getNtsYr(s):0}))
+    .filter(s=>s.fNts>0).sort((a,b)=>a.fAvg-b.fAvg);
+  const totalRev=enriched.reduce((a,s)=>a+s.fRev,0);
+  const totalNts=enriched.reduce((a,s)=>a+s.fNts,0);
+  const avgRate=totalNts>0?totalRev/totalNts:0;
+  const yrLabel=activeYr==='all'?'2025–2026':activeYr;
+  webShareData={hotelName:h?.hotel||key.split('||')[0],city:h?.city||key.split('||')[1],
+    enriched,totalRev,totalNts,avgRate,yrLabel,key};
+  document.getElementById('wsm-content').innerHTML=`
+    <div class="wsm-logo">ORN· Supply Negotiation Hub</div>
+    <div class="wsm-hotel">${webShareData.hotelName}</div>
+    <div class="wsm-city">📍 ${webShareData.city} · ${yrLabel}</div>
+    <div class="wsm-grid">
+      <div class="wsm-kpi"><div class="wsm-kv">${fmtW(totalRev)}</div><div class="wsm-kl">Revenue</div></div>
+      <div class="wsm-kpi"><div class="wsm-kv">${Number(totalNts).toLocaleString()}</div><div class="wsm-kl">Room Nights</div></div>
+      <div class="wsm-kpi"><div class="wsm-kv">${fmtW(avgRate)}</div><div class="wsm-kl">Blended Rate</div></div>
+      <div class="wsm-kpi"><div class="wsm-kv">${sources.length}</div><div class="wsm-kl">Sources</div></div>
+    </div>
+    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Rate by Source</div>
+    ${enriched.map(s=>`<div class="wsm-src-row">
+      <span class="wsm-src-name">${s.Source==='Direct / Contracted'?'Direct Contract':s.Source}</span>
+      <span class="wsm-src-rate">${fmtW(s.fAvg)}/nt</span>
+    </div>`).join('')}
+    <div class="wsm-footer">ORN Supply Negotiation Hub · ${new Date().toLocaleDateString()}</div>`;
+  document.getElementById('web-share-modal').classList.add('open');
+}
+
+function closeWebShare(e) {
+  if(e&&e.target!==document.getElementById('web-share-modal'))return;
+  document.getElementById('web-share-modal').classList.remove('open');
+}
+
+function copyWebShare() {
+  if(!webShareData)return;
+  const {hotelName,city,enriched,totalRev,totalNts,avgRate,yrLabel}=webShareData;
+  const text=['ORN Supply Negotiation Hub','═══════════════════════',
+    hotelName, city+' · '+yrLabel,'',
+    'Revenue:      '+fmtW(totalRev),'Room Nights:  '+Number(totalNts).toLocaleString(),
+    'Blended Rate: '+fmtW(avgRate)+'/nt','','RATES BY SOURCE:',
+    ...enriched.map(s=>(s.Source==='Direct / Contracted'?'Direct Contract':s.Source).padEnd(22)+fmtW(s.fAvg)+'/nt · '+Number(s.fNts).toLocaleString()+' nights'),
+    '','Generated: '+new Date().toLocaleDateString()].join('\n');
+  navigator.clipboard?.writeText(text).then(()=>{
+    const btn=document.querySelector('.wsm-btn-copy');
+    if(btn){btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='📋 Copy & Share',2000);}
+  });
+}
 </script>
 
 <script>
