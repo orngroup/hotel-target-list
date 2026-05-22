@@ -43976,6 +43976,32 @@ window.addEventListener('load', () => {
   }
 });
 
+function showUserBadge(user) {
+  document.getElementById('user-badge').style.display = 'flex';
+  document.getElementById('sync-indicator').style.display = 'flex';
+  const av = document.getElementById('user-avatar');
+  const nd = document.getElementById('user-name-display');
+  const rd = document.getElementById('user-role-display');
+  if(av) av.textContent = user.initials;
+  if(nd) nd.textContent = user.name;
+  if(rd) rd.textContent = user.role;
+  const al = document.getElementById('activity-log');
+  if(al) al.style.display = 'block';
+}
+
+function logActivity(action) {
+  const user = window.currentUser;
+  if (!user) return;
+  const entries = document.getElementById('act-entries');
+  if (!entries) return;
+  const now = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const div = document.createElement('div');
+  div.className = 'act-entry';
+  div.innerHTML = '<span class="act-who">'+user.initials+'</span><span>'+action+'</span><span class="act-time">'+now+'</span>';
+  entries.insertBefore(div, entries.firstChild);
+  while(entries.children.length > 5) entries.removeChild(entries.lastChild);
+}
+
 function loadAllPanels() {
   // Called after login — loads saved data for all panels
   loadPanel('Thailand');
@@ -44313,8 +44339,8 @@ function subscribeTo(k) {
     if(activeTbl&&activeTbl.id==='ht-'+k){
       const b=document.getElementById('conflict-banner');
       if(b){b.innerHTML='⚡ <strong>'+remote.savedBy+'</strong> just updated this panel. '
-        +'<button class="cbtn" onclick="acceptRemote(''+k+'')">Load Latest</button>'
-        +'<button class="cdismiss" onclick="document.getElementById('conflict-banner').classList.remove('show')">Keep Mine</button>';
+        +'<button class="cbtn" onclick="acceptRemote(&quot;'+k+'&quot;)">Load Latest</button>'
+        +'<button class="cdismiss" onclick="document.getElementById(&quot;conflict-banner&quot;).classList.remove(&quot;show&quot;)">Keep Mine</button>';
         b.classList.add('show');}
     } else {
       if(typeof applyData==='function')applyData(k,remote.data,remote);
